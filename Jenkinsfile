@@ -1,11 +1,11 @@
 node {
 
   git 'https://github.com/ghassencherni/notes_k8s.git'
-  withCredentials([usernamePassword(credentialsId: 'aws_credentials', usernameVariable: 'ACCESS_KEY', passwordVariable: 'SECRET_ACCESS')]) 
+  withCredentials([usernamePassword(credentialsId: 'aws_credentials', usernameVariable: 'ACCESS_KEY', passwordVariable: 'SECRET_ACCESS')])
 {
 
   if(action == 'Deploy Notes') {
-    
+
 
     stage('Getting "config" and "rds_conn_configmap.yaml"') {
       copyArtifacts filter: 'service-notes.yaml, rds_conn_configmap.yaml, config', fingerprintArtifacts: true, projectName: 'terraform_aws_eks_psg', selector: upstream(fallbackToLastSuccessful: true)
@@ -30,11 +30,11 @@ node {
     stage('Create the LB Service') {
       sh """
           export AWS_ACCESS_KEY_ID='$ACCESS_KEY'
-          export AWS_SECRET_ACCESS_KEY='$SECRET_ACCESS'    
+          export AWS_SECRET_ACCESS_KEY='$SECRET_ACCESS'
           sleep 20
           export KUBECONFIG=config
           kubectl apply -f service-notes.yaml
-         """
+        """
       }
     stage('Get the LB notes URL') {
       sh """
@@ -66,7 +66,7 @@ if(action == 'Destroy Notes') {
           kubectl delete deployment/notes-deployment
          """
       }
-    stage('Delete the ConfigMap') {
+     stage('Delete the ConfigMap') {
       sh """
           export AWS_ACCESS_KEY_ID='$ACCESS_KEY'
           export AWS_SECRET_ACCESS_KEY='$SECRET_ACCESS'
@@ -74,6 +74,8 @@ if(action == 'Destroy Notes') {
           kubectl delete configmap/rds-conn
          """
       }
+    }
+ 
    }
+ 
  }
-}
