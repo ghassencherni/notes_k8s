@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: notes
-        image: registry.gitlab.com/myartifakt/mynotes:latest
+        image: registry.gitlab.com/myartifakt/mynotes:v1.0.16
         envFrom:
         - configMapRef:
             name: rds-conn
