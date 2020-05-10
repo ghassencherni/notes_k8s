@@ -27,3 +27,4 @@ spec:
             port: 80
           initialDelaySeconds: 10  
           periodSeconds: 2         
+        imagePullPolicy: Always
